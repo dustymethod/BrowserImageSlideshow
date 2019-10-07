@@ -1,7 +1,7 @@
 BrowserImageSlideshow v1
 https://github.com/dustymethod/BrowserImageSlideshow
 
-A local browser source that plays images in random or alphabetical order. Has no image count limit.
+A local browser source for OBS that plays images in random or alphabetical order. Has no image count limit.
 
 Modes (settings.js):
     0: random order (default). Displays each image exactly once per loop.
