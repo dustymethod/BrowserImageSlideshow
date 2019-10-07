@@ -1,0 +1,144 @@
+<!--
+
+BrowserImageSlideshow v1
+https://github.com/dustymethod/BrowserImageSlideshow
+
+-->
+<div id="imageContainer"></div>
+<style>
+    *{
+        border-color: transparent;
+    }
+    img {
+        position: fixed;
+        object-fit:contain;
+        width: 100%;
+        height: 100%;
+        border-color: transparent;
+    }
+
+    body {
+        background-color: transparent;
+        margin: auto;
+        overflow: hidden;
+    }
+</style>
+<script src="jquery-3.4.1.min.js"></script>
+<script src="images/images.js"></script>
+<script src="settings.js"></script>
+<script>
+    function shuffle(a) {
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        //console.log(a);
+        return a;
+    }
+
+    function randomizeTick(max) {
+        tick = Math.floor(Math.random() * max);
+    }
+
+    // setup image src strings
+    let images = imageNamesStr.split("\n");
+    images.shift();
+    images.pop();
+    for (let i = images.length-1; i >= 0; i--) {
+        // remove js, sh, or directory
+        let remove = images[i].includes(".js") || images[i].includes(".sh") || !images[i].includes(".");
+        if (remove) {
+            images.splice(i, 1);
+        }
+    }
+
+    // setup indexes for shuffling
+    let indexes = new Array();
+    for(let i = 0; i < images.length; i++) {
+        images[i] = "images/" + images[i];
+        indexes.push(i);
+    }
+    
+    // init img elements
+    let topImage = document.createElement("img");
+    let botImage = document.createElement("img");
+    let imageContainer = document.getElementById("imageContainer");
+    imageContainer.appendChild(topImage);
+    imageContainer.appendChild(botImage);
+    topImage.id = "topImage";
+    botImage.id = "botImage";
+    
+    // prevent white outline by setting initial transparency
+    topImage.style.opacity = "0.0";
+    botImage.style.opacity = "0.0";
+
+    //set init image
+    let tick = 0;
+    if (mode === 0) {
+        shuffle(indexes);    
+    }
+    
+    //randomize tick
+    if (mode === 2) {
+        randomizeTick(images.length-1);
+    }
+
+    let fadeDuration = slideDuration * 0.25;
+    
+    function slideshow() {
+        //let fadeDuration = 1000;
+    
+        $("#botImage").animate({
+                opacity:1.0
+            },
+            {
+                duration:fadeDuration
+            });
+    
+        $("#topImage").animate({ //properties
+                opacity:0
+            },
+            { //options
+                duration: fadeDuration,
+                done: function(){
+                    if (tick === images.length-1) { //reset
+                        if (mode === 0) {
+                            shuffle(indexes);
+                        } else if (mode === 2) {
+                            randomizeTick(images.length-1);
+                        }
+                        tick = 0;
+                    } else {
+                        tick++;
+                    }
+    
+                    topImage.src = botImage.src;
+                    topImage.style.opacity = "1.0";
+                    botImage.src = images[indexes[tick]];
+                    botImage.style.opacity = "0.0";
+                }
+            }
+        );
+    }
+
+    if (images.length > 0) {
+        botImage.src = images[indexes[tick]];
+        botImage.style.opacity = "0.0";
+        
+        //initial fade in
+        $("#botImage").animate({
+            opacity:1.0
+        }, { duration:fadeDuration }
+        );
+        
+        $("#topImage").animate({
+            opacity:0
+        }, { duration:fadeDuration }
+        );
+
+        if (images.length > 1) {
+            slideshow();
+            setInterval(slideshow, slideDuration);    
+        }
+    }
+</script>
