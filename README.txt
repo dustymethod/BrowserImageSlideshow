@@ -1,12 +1,12 @@
-# BrowserImageSlideshow v1
+BrowserImageSlideshow v1
 https://github.com/dustymethod/BrowserImageSlideshow
 
 A local browser source that plays images in random or alphabetical order. Has no image count limit.
 
 Modes (settings.js):
-    - 0 (default): random order. Displays each image exactly once per loop.
-    - 1: Alphabetical order
-    - 2: Alphabetical order (start at random image)
+    0: random order (default). Displays each image exactly once per loop.
+    1: Alphabetical order
+    2: Alphabetical order (start at random image)
 
 0. Download: click "Clone or download" from the github page, choose "Download ZIP", and unzip the files.
 1. Place your images in the "images" folder. jpg, png, gifs all work.
