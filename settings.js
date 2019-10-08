@@ -6,3 +6,5 @@ let slideDuration = 3800;
 // 1: Alphabetical order
 // 2: Alphabetical order (start at random image)
 let mode = 0;
+
+/* Don't forget to refresh the source in OBS after changing the settings! */
