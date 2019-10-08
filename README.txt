@@ -4,7 +4,7 @@ https://github.com/dustymethod/BrowserImageSlideshow
 A local browser source for OBS that plays images in random or alphabetical order. Has no image count limit.
 
 Modes (settings.js)
-    0: random order (default). Displays each image exactly once per loop.
+    0: Random order (default). Displays each image exactly once per loop.
     1: Alphabetical order
     2: Alphabetical order (start at random image)
 
@@ -23,6 +23,6 @@ Setup
 
 Notes
     - settings.js can be opened & edited in notepad. (includes slide duration & mode settings)
-    - to use updated settings, refresh source by toggling visibility
+    - To use updated settings, refresh source by toggling visibility
     - RefreshImages.sh saves a list of all images in the images folder in "images.js"
-    - filenames with uncommon characters may not display
+    - Filenames with uncommon characters may not display
