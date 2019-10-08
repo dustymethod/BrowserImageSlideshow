@@ -18,8 +18,8 @@ Setup
 2. Place your images in the "images" folder. jpg, png, gifs all work.
 3. Run the RefreshImages.sh script to refresh the list of images. (don't need to restart obs or anything)
     - *** This must be run whenever images are added or renamed! ***
-    - After adding images, refresh the source by toggling its visibility
-4. *** Don't forget to run RefreshImages whenever you add or rename images, or they won't appear! ***
+    - Refresh the source by toggling its visibility
+4. *** Repeat step 3 whenever you add or rename images, or they won't appear! ***
 
 Notes
     - settings.js can be opened & edited in notepad. (includes slide duration & mode settings)
