@@ -37,6 +37,7 @@ https://github.com/dustymethod/BrowserImageSlideshow
         return a;
     }
 
+    // [0, max)
     function randomizeTick(max) {
         tick = Math.floor(Math.random() * max);
     }
@@ -81,7 +82,7 @@ https://github.com/dustymethod/BrowserImageSlideshow
     
     //randomize tick
     if (mode === 2) {
-        randomizeTick(images.length-1);
+        randomizeTick(images.length);
     }
 
     let fadeDuration = slideDuration * 0.25;
@@ -106,7 +107,7 @@ https://github.com/dustymethod/BrowserImageSlideshow
                         if (mode === 0) {
                             shuffle(indexes);
                         } else if (mode === 2) {
-                            randomizeTick(images.length-1);
+                            randomizeTick(images.length);
                         }
                         tick = 0;
                     } else {
