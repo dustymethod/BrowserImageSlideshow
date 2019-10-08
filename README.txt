@@ -13,7 +13,7 @@ Modes (settings.js):
 2. Run the RefreshImages.sh script to refresh the list of images.
     - *** This must be run whenever images are added or renamed. ***
     - This script saves a list of all images in the folder in "images.js"
-    - After adding images, the source can be refreshed by toggling its visibility, or switching to the scene
+    - After adding images, the source can be refreshed by toggling its visibility
 3. In OBS Studio or Streamlabs OBS:
     - Add Source > Browser
     - Add local file "BrowserImageSlideshow.html"
