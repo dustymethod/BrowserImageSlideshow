@@ -22,7 +22,7 @@ Setup
 4. *** Don't forget to run RefreshImages whenever you add or rename images, or they won't appear! ***
 
 Notes
-    - settings.js can be opened & edited in notepad. (includes slide duration & mode settings)    
+    - settings.js can be opened & edited in notepad. (includes slide duration & mode settings)
+    - to use updated settings, refresh source by toggling visibility
     - RefreshImages.sh saves a list of all images in the images folder in "images.js"
     - filenames with uncommon characters may not display
-    - has only been tested in Windows
