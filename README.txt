@@ -17,14 +17,14 @@ Setup
     - Check "Shutdown source when not visible" and "Refresh browser when scene becomes active"
 2. Place your images in the "images" folder. jpg, png, gifs all work.
 3. Refresh images - This must be done whenever images are added or renamed!
-    - Run RefreshImages.sh
+    - Run RefreshImagesW.cmd (for windows) or RefreshImages.sh (for linux)
     - Refresh the source in OBS by toggling its visibility
 4. *** Repeat step 3 whenever you add or rename images, or they won't appear! ***
 
 Notes
     - settings.js can be opened & edited in notepad. (includes slide duration & mode settings)
     - To use updated settings, refresh source by toggling visibility
-    - RefreshImages.sh saves a list of all images in the images folder in "images.js"
+    - The RefreshImages script saves a list of all images in the images folder in "images.js"
     - Filenames with uncommon characters may not display
     
 Discussion & support: https://obsproject.com/forum/threads/random-image-slideshow.110157/
