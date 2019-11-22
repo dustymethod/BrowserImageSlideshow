@@ -1,4 +1,4 @@
-BrowserImageSlideshow v1
+BrowserImageSlideshow v1.1
 https://github.com/dustymethod/BrowserImageSlideshow
 
 A local browser source for OBS that plays images in random or alphabetical order. Has no image count limit.
