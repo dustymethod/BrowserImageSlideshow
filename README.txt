@@ -26,3 +26,5 @@ Notes
     - To use updated settings, refresh source by toggling visibility
     - RefreshImages.sh saves a list of all images in the images folder in "images.js"
     - Filenames with uncommon characters may not display
+    
+Discussion & support: https://obsproject.com/forum/threads/random-image-slideshow.110157/
