@@ -1,3 +1,0 @@
-let imageNamesStr = `
-images.js
-`
