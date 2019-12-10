@@ -1,6 +1,6 @@
 BrowserImageSlideshow v1.2
 https://github.com/dustymethod/BrowserImageSlideshow
-Discussion & support: https://obsproject.com/forum/threads/random-image-slideshow.110157/
+Discussion & support: https://obsproject.com/forum/threads/browser-image-slideshow.110157/
 
 A local browser source for OBS that plays images in random or alphabetical order.
 Displays each image exactly one per loop.
