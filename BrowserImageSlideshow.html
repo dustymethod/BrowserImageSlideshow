@@ -1,7 +1,8 @@
 <!--
 
-BrowserImageSlideshow v1.1
+BrowserImageSlideshow v1.2
 https://github.com/dustymethod/BrowserImageSlideshow
+https://obsproject.com/forum/threads/random-image-slideshow.110157/
 
 -->
 <div id="imageContainer"></div>
@@ -48,7 +49,7 @@ https://github.com/dustymethod/BrowserImageSlideshow
     images.pop();
     for (let i = images.length-1; i >= 0; i--) {
         // remove js, sh, or directory
-        let remove = images[i].includes(".js") || images[i].includes(".sh") || !images[i].includes(".");
+        let remove = images[i].includes(".js") || images[i].includes(".sh") || !images[i].includes(".") || images[i].includes(".git");
         if (remove) {
             images.splice(i, 1);
         }

@@ -1,30 +1,43 @@
-BrowserImageSlideshow v1.1
+BrowserImageSlideshow v1.2
 https://github.com/dustymethod/BrowserImageSlideshow
+Discussion & support: https://obsproject.com/forum/threads/random-image-slideshow.110157/
 
-A local browser source for OBS that plays images in random or alphabetical order. Has no image count limit.
+A local browser source for OBS that plays images in random or alphabetical order.
+Displays each image exactly one per loop.
 
 Modes (settings.js)
-    0: Random order (default). Displays each image exactly once per loop.
+    0: Random order
     1: Alphabetical order
-    2: Alphabetical order (start at random image)
+    2: Alphabetical order (start at random image when source becomes visible)
 
 Setup
 0. Download: click "Clone or download" from the github page, choose "Download ZIP", and unzip the files.
-1. In OBS Studio or Streamlabs OBS:
+    - save the zip somewhere in your Documents folder, and not in the default obs-plugins folder.
+1. Add the browser source in OBS:
     - Add Source > Browser
-    - Add local file "BrowserImageSlideshow.html"
+    - Choose local file "BrowserImageSlideshow.html"
     - Remove Custom CSS
-    - Check "Shutdown source when not visible" and "Refresh browser when scene becomes active"
-2. Place your images in the "images" folder. jpg, png, gifs all work.
-3. Refresh images - This must be done whenever images are added or renamed!
-    - Run RefreshImagesW.cmd (for windows) or RefreshImages.sh (for linux)
+    - Enable "Shutdown source when not visible" and "Refresh browser when scene becomes active" options.
+2: Add the lua script:
+    - Tools > Scripts
+    - Add RefreshImagesLua.lua. Select the script to view settings.
+3. Place slideshow images in the "images" folder. jpg, png, gifs all work.
+4. Refresh images/settings
+    - This must be done whenever images are added/removed/renamed, or when settings are updated.
+    - OBS > Tools > Scripts: select script & press Reload scripts button
     - Refresh the source in OBS by toggling its visibility
-4. *** Repeat step 3 whenever you add or rename images, or they won't appear! ***
+5. *** Repeat step 4 whenever you add/remove/rename images or update the settings. ***
+
 
 Notes
-    - settings.js can be opened & edited in notepad. (includes slide duration & mode settings)
-    - To use updated settings, refresh source by toggling visibility
-    - The RefreshImages script saves a list of all images in the images folder in "images.js"
+    - Adding RefreshImageLua.lua to OBS is optional. if not used, the list of images needs to be updated 
+    manually by running RefreshImagesW.cmd (windows) or RefreshImages.sh (linux)
+    - settings.js can be opened & edited manually in any text editor. (includes slide duration & mode settings)
+    - updating settings thru RefreshImagesLua.lua will overwrite settings.js
     - Filenames with uncommon characters may not display
+    - OBS's slideshow currently preloads all slideshow images, and has a 250MB limit.
+    This browser source doesn't preload images, and has no 250MB limit.
     
-Discussion & support: https://obsproject.com/forum/threads/random-image-slideshow.110157/
+Issues
+    - because of the way script(s) write to a file, a harmless command window will pop up briefly when the script is run.
+    Haven't found a way to suppress this yet.
