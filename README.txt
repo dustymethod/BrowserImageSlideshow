@@ -25,7 +25,7 @@ Setup
     - Add RefreshImagesLua.lua. Select the script to view settings.
 4. Refresh images/settings
     - This must be done whenever images are added/removed/renamed, or when settings are updated.
-    - OBS Studio > Tools > Scripts: select script & press Reload scripts button
+    - OBS Studio > Tools > Scripts: select RefreshImagesLua.lua & press Reload scripts button
     - Or, if not using the lua script, run RefreshImagesW.cmd (windows) or RefreshImages.sh (linux) by double-clicking it.
     - Refresh the source in OBS by toggling its visibility
 5. *** Repeat step 4 whenever you add/remove/rename images or update the settings. ***
