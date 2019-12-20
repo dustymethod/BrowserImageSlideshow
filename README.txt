@@ -2,8 +2,9 @@ BrowserImageSlideshow v1.2
 https://github.com/dustymethod/BrowserImageSlideshow
 Discussion & support: https://obsproject.com/forum/threads/browser-image-slideshow.110157/
 
-A local browser source for OBS that plays images in random or alphabetical order.
-Displays each image exactly one per loop.
+A local browser source that plays images in random or alphabetical order.
+Displays each image exactly once per loop.
+Useful for slideshows that may exceed OBS's slideshow's 250mb ram limit. Works offline.
 
 Modes (settings.js)
     0: Random order
@@ -18,25 +19,23 @@ Setup
     - Choose local file "BrowserImageSlideshow.html"
     - Remove Custom CSS
     - Enable "Shutdown source when not visible" and "Refresh browser when scene becomes active" options.
-2: Add the lua script:
-    - Tools > Scripts
+2. Place slideshow images in the "images" folder. jpg, png, gifs all work.
+3: Add the lua script (optional):
+    - in OBS Studio: Tools > Scripts
     - Add RefreshImagesLua.lua. Select the script to view settings.
-3. Place slideshow images in the "images" folder. jpg, png, gifs all work.
 4. Refresh images/settings
     - This must be done whenever images are added/removed/renamed, or when settings are updated.
-    - OBS > Tools > Scripts: select script & press Reload scripts button
+    - OBS Studio > Tools > Scripts: select script & press Reload scripts button
+    - Or, if not using the lua script, run RefreshImagesW.cmd (windows) or RefreshImages.sh (linux) by double-clicking it.
     - Refresh the source in OBS by toggling its visibility
 5. *** Repeat step 4 whenever you add/remove/rename images or update the settings. ***
 
-
 Notes
-    - Adding RefreshImageLua.lua to OBS is optional. if not used, the list of images needs to be updated 
-    manually by running RefreshImagesW.cmd (windows) or RefreshImages.sh (linux)
+    - Adding RefreshImageLua.lua to OBS Studio is optional. If not used, refreshing images & settings can still be done manually 
+    by running RefreshImagesW.cmd (windows) or RefreshImages.sh (linux).
     - settings.js can be opened & edited manually in any text editor. (includes slide duration & mode settings)
-    - updating settings thru RefreshImagesLua.lua will overwrite settings.js
+    - updating settings using RefreshImagesLua.lua in OBS Studio will overwrite settings.js
     - Filenames with uncommon characters may not display
-    - OBS's slideshow currently preloads all slideshow images, and has a 250MB limit.
-    This browser source doesn't preload images, and has no 250MB limit.
     
 Issues
     - because of the way script(s) write to a file, a harmless command window will pop up briefly when the script is run.
