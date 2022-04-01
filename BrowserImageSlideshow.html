@@ -87,6 +87,7 @@ https://obsproject.com/forum/threads/browser-image-slideshow.110157/
     }
 
     let fadeDuration = slideDuration * 0.25;
+    let slideshowFunc;
     
     function slideshow() {
         //let fadeDuration = 1000;
@@ -104,15 +105,19 @@ https://obsproject.com/forum/threads/browser-image-slideshow.110157/
             { //options
                 duration: fadeDuration,
                 done: function(){
-                    if (tick === images.length-1) { //reset
-                        if (mode === 0) {
-                            shuffle(indexes);
-                        } else if (mode === 2) {
-                            randomizeTick(images.length);
-                        }
-                        tick = 0;
+                    if (tick === images.length-1 && stopOnLastImage === true) {
+                        clearInterval(slideshowFunc); //stop slideshow on last slide
                     } else {
-                        tick++;
+                        if (tick === images.length-1) { //reset
+                            if (mode === 0) {
+                                shuffle(indexes);
+                            } else if (mode === 2) {
+                                randomizeTick(images.length);
+                            }
+                            tick = 0;
+                        } else {
+                            tick++;
+                        }
                     }
     
                     topImage.src = botImage.src;
@@ -141,7 +146,7 @@ https://obsproject.com/forum/threads/browser-image-slideshow.110157/
 
         if (images.length > 1) {
             slideshow();
-            setInterval(slideshow, slideDuration);    
+            slideshowFunc = setInterval(slideshow, slideDuration);    
         }
     }
 </script>
