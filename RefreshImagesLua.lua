@@ -16,36 +16,41 @@ minSlideDuration = 1000
 maxSlideDuration = 100000
 
 function script_description()
-	return "Script for the slideshow browser source. Saves a list of images in images/images.js, and saves settings in settings.js. See README for full details. " ..
-    "Is run automatically when OBS is launched.\n\n" ..
+	return "Lua script for the BrowserImageSlideshow. Updates the list of images in images/images.js, and overwrites the settings in settings.js. See README for full details. " ..
+    "Runs once automatically when OBS is launched. \n\n" ..
 
-    "*** Whenever settings or images are updated, reload the script & refresh the browser to use updated settings/images: \n"..
-    "- Reload script: press the reload button with this script selected.\n"..
-    "- Refresh browser source: toggle the source's visiblity off and on\n"..
+    "*** After changing the settings below, the script & browser source must be reloaded for changes to take effect: *** \n"..
+    "1. Reload script: press the Reload Scripts button (next to Add/Remove scripts).\n"..
+    "2. Refresh browser source: toggle the source's visiblity off and on\n"..
     
     "\nModes: \n" ..
-    "0: Random order\n" ..
-    "1: Alphabetical order\n" ..
-    "2: Alphabetical order (start at random image when source becomes visible)"
+    "[0]: Random order\n" ..
+    "[1]: Alphabetical order\n" ..
+    "[2]: Alphabetical order (start at random image)\n\n"..
+
+    "https://obsproject.com/forum/resources/browser-image-slideshow.852/"
+
 end
 
 function script_properties()
     props = obs.obs_properties_create()
     obs.obs_properties_add_int(props, "mode", "Mode:", 0, 2, 1)
     obs.obs_properties_add_int(props, "slideDuration", "Slide duration (ms):", minSlideDuration, maxSlideDuration, 500)
+    obs.obs_properties_add_bool(props, "stopOnLastImage", "Stop slideshow on last image?")
     return props
 end
 
 -- called when script is loaded
 function script_load(settings)
     obs.obs_data_set_default_int(settings, "slideDuration", defaultSlideDuration)
-    refresh_images()
+    update_image_list(script_path() .. 'images/')
 end
 
 -- called when script settings change
 function script_update(settings)
     mode = obs.obs_data_get_int(settings, "mode")
     slideDuration = obs.obs_data_get_int(settings, "slideDuration")
+    stopOnLastImage = obs.obs_data_get_bool(settings, "stopOnLastImage")
     update_slideshow_settings()
 end
 
@@ -55,7 +60,14 @@ function update_slideshow_settings()
     
     output:write('let mode = '.. mode .. ';\n')
     output:write('let slideDuration = '.. slideDuration .. ';\n')
+    if stopOnLastImage == true then
+        output:write('let stopOnLastImage = true;\n')
+    else
+        output:write('let stopOnLastImage = false;\n')
+    end
     output:close()
+    
+    log_slideshow_info()
 end
 
 -- write list of images to js file
@@ -76,7 +88,6 @@ function update_image_list(dir)
     output:close()
 end
 
-function refresh_images()
-    local list = update_image_list(script_path() .. 'images/')
-    print("Refreshed images (images: ".. imageCount .." | mode: ".. mode .." | duration: ".. slideDuration .. ")")
+function log_slideshow_info()
+    print("BrowserImageSlideshow updated. \n" .. "Files detected: ".. imageCount .." | mode: ".. mode .." | duration: ".. slideDuration .. "ms | loop: " .. tostring(not(stopOnLastImage)))
 end
