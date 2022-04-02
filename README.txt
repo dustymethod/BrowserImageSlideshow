@@ -23,6 +23,7 @@ Setup
 3: Add the lua script (optional):
     - in OBS Studio: Tools > Scripts
     - Add RefreshImagesLua.lua. Select the script to view settings.
+    - updating settings via lua script will overwrite settings.js. the lua script does not load existing settings from settings.js
 4. Refresh images/settings
     - This must be done whenever images are added/removed/renamed, or when settings are updated.
     - OBS Studio > Tools > Scripts: select RefreshImagesLua.lua & press Reload scripts button
@@ -32,9 +33,8 @@ Setup
 
 Notes
     - Adding RefreshImageLua.lua to OBS Studio is optional. If not used, refreshing images & settings can still be done manually 
-    by running RefreshImagesW.cmd (windows) or RefreshImages.sh (linux).
+    by running RefreshImages.sh or RefreshImagesW.cmd
     - settings.js can be opened & edited manually in any text editor. (includes slide duration & mode settings)
-    - updating settings using RefreshImagesLua.lua in OBS Studio will overwrite settings.js
     - Filenames with uncommon characters may not display
     
 Issues
