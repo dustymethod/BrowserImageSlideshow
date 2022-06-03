@@ -24,7 +24,7 @@ Setup
     - Remove Custom CSS
     - Enable "Shutdown source when not visible" and "Refresh browser when scene becomes active" options.
 2. Place slideshow images in the "images" folder (ex. jpg, png, gif)
-3: (Option) Add the lua script:
+3: (Optional) Add the lua script:
     - in OBS Studio: Tools > Scripts
     - Add RefreshImagesLua.lua, select the script to view settings.
     - updating settings via lua script will overwrite settings.js.
