@@ -26,7 +26,7 @@ Setup
 2. Place your slideshow images in the "images" folder (ex. jpg, png, gif)
 3. (Optional) Add the lua script:
     - in OBS Studio: Tools > Scripts
-    - Add RefreshImagesLua.lua, select the script to view settings.
+    - Add RefreshImagesLua.lua, select the script to view and change settings.
     - this is purely an alternative to using RefreshImagesW.cmd or RefreshImages.sh in step 4
 4. Refreshing images/settings
     - This must be done whenever images are added/removed/renamed, or when settings are updated.
