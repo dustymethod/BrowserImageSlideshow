@@ -1,4 +1,4 @@
-BrowserImageSlideshow v1.3
+BrowserImageSlideshow
 https://github.com/dustymethod/BrowserImageSlideshow
 Discussion & support: https://obsproject.com/forum/threads/browser-image-slideshow.110157/
 

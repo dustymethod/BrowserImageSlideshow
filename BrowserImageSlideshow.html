@@ -1,6 +1,7 @@
+<!DOCTYPE html>
 <!--
 
-BrowserImageSlideshow v1.2
+BrowserImageSlideshow
 https://github.com/dustymethod/BrowserImageSlideshow
 https://obsproject.com/forum/threads/browser-image-slideshow.110157/
 
@@ -25,24 +26,17 @@ https://obsproject.com/forum/threads/browser-image-slideshow.110157/
         overflow: hidden;
     }
 </style>
+
 <script src="jquery-3.4.1.min.js"></script>
 <script src="images/images.js"></script>
 <script src="settings.js"></script>
 <script>
-    function shuffle(a) {
-        for (let i = a.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [a[i], a[j]] = [a[j], a[i]];
-        }
-        //console.log(a);
-        return a;
-    }
-
-    // [0, max)
-    function randomizeTick(max) {
-        tick = Math.floor(Math.random() * max);
-    }
-
+    
+    // modes (defined in settings.js):
+    // 0: Random order (default)
+    // 1: Alphabetical order
+    // 2: Alphabetical order (start on random image)
+    
     // setup image src strings
     let images = imageNamesStr.split("\n");
     images.shift();
@@ -62,12 +56,12 @@ https://obsproject.com/forum/threads/browser-image-slideshow.110157/
         indexes.push(i);
     }
     
-    // init img elements
+    // setup img elements
     let topImage = document.createElement("img");
     let botImage = document.createElement("img");
     let imageContainer = document.getElementById("imageContainer");
-    imageContainer.appendChild(topImage);
     imageContainer.appendChild(botImage);
+    imageContainer.appendChild(topImage);
     topImage.id = "topImage";
     botImage.id = "botImage";
     
@@ -75,78 +69,95 @@ https://obsproject.com/forum/threads/browser-image-slideshow.110157/
     topImage.style.opacity = "0.0";
     botImage.style.opacity = "0.0";
 
-    //set init image
+    let fadeDuration = slideDuration * 0.25;
+    let slideshowFunc;
     let tick = 0;
-    if (mode === 0) {
-        shuffle(indexes);    
+    let fadeInTop = true; // bool for deciding if top image fades in or out
+    
+    function shuffle(a) {
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
+    function randomizeTick(max) {
+        tick = Math.floor(Math.random() * max); // [0, max)
     }
     
-    //randomize tick
-    if (mode === 2) {
+    function nextSlide() {
+        if (tick === images.length-1 && stopOnLastImage === true) {
+            clearInterval(slideshowFunc); // stop slideshow on last slide
+        } else {
+            if (tick === images.length-1) { // if end of loop, start new loop
+                if (mode === 0) {
+                    shuffle(indexes);
+                } else if (mode === 2) {
+                    randomizeTick(images.length);
+                }
+                tick = 0;
+            } else { // next slide
+                tick++;
+            }
+        }
+
+        fadeInTop = !fadeInTop;
+    }
+    
+    function slideshow() {
+        if (fadeInTop) {
+            topImage.src = images[indexes[tick]];
+            
+            $("#botImage").animate(
+                { opacity: 0.0 },
+                { duration: fadeDuration }
+            );
+            
+            $("#topImage").animate(
+                { opacity: 1.0 },
+                {
+                    duration: fadeDuration,
+                    done: nextSlide
+                }
+            );
+
+        } else {
+            botImage.src = images[indexes[tick]];
+            
+            $("#botImage").animate(
+                { opacity: 1.0 },
+                { duration: fadeDuration }
+            );
+            
+            $("#topImage").animate(
+                { opacity: 0.0 },
+                {
+                    duration: fadeDuration,
+                    done: nextSlide
+                }
+            );
+        }
+    }
+    
+    if (mode === 0) { // random mode
+        shuffle(indexes);
+    } else if (mode === 2) { // choose random image to start on
         randomizeTick(images.length);
     }
 
-    let fadeDuration = slideDuration * 0.25;
-    let slideshowFunc;
-    
-    function slideshow() {
-        //let fadeDuration = 1000;
-    
-        $("#botImage").animate({
-                opacity:1.0
-            },
-            {
-                duration:fadeDuration
-            });
-    
-        $("#topImage").animate({ //properties
-                opacity:0
-            },
-            { //options
-                duration: fadeDuration,
-                done: function(){
-                    if (tick === images.length-1 && stopOnLastImage === true) {
-                        clearInterval(slideshowFunc); //stop slideshow on last slide
-                    } else {
-                        if (tick === images.length-1) { //reset
-                            if (mode === 0) {
-                                shuffle(indexes);
-                            } else if (mode === 2) {
-                                randomizeTick(images.length);
-                            }
-                            tick = 0;
-                        } else {
-                            tick++;
-                        }
-                    }
-    
-                    topImage.src = botImage.src;
-                    topImage.style.opacity = "1.0";
-                    botImage.src = images[indexes[tick]];
-                    botImage.style.opacity = "0.0";
-                }
-            }
-        );
-    }
-
-    if (images.length > 0) {
-        botImage.src = images[indexes[tick]];
-        botImage.style.opacity = "0.0";
+    // if only 1 image in slide show, fade in the image
+    if (images.length == 1) {
+        botImage.src = images[indexes[0]];
         
-        //initial fade in
-        $("#botImage").animate({
-            opacity:1.0
-        }, { duration:fadeDuration }
-        );
-        
-        $("#topImage").animate({
-            opacity:0
-        }, { duration:fadeDuration }
+        $("#botImage").animate(
+            { opacity: 1.0 },
+            { duration: fadeDuration }
         );
 
-        if (images.length > 1) {
-            slideshow();
-            slideshowFunc = setInterval(slideshow, slideDuration);    
-        }
+    // else start the slideshow
+    } else if (images.length > 1) {
+        slideshow();
+        slideshowFunc = setInterval(slideshow, slideDuration);
     }
 </script>

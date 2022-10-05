@@ -1,6 +1,5 @@
 --[=====[ 
 
-v1.2
 https://github.com/dustymethod/BrowserImageSlideshow
 https://obsproject.com/forum/resources/browser-image-slideshow.852/
 
