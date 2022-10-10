@@ -47,6 +47,9 @@ Notes
     - This resource has only been tested on Windows. I have not done extensive testing
     - RefreshImages.sh and RefreshImagesW.cmd do the same thing. one was added later because of compatibility issues
     
+This script uses compressed jquery (used for animating slide transitions)
+https://jquery.com/
+    
 Issues
     - because of the way script(s) write to a file, a harmless command window may pop up briefly when the script is run.
     Haven't found a way to suppress this yet.
