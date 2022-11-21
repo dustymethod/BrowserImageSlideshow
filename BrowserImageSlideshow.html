@@ -71,7 +71,7 @@ https://obsproject.com/forum/threads/browser-image-slideshow.110157/
 
     let fadeDuration = slideDuration * 0.25;
     let slideshowFunc;
-    let tick = 0;
+    let index = 0;
     let fadeInTop = true; // bool for deciding if top image fades in or out
     
     function shuffle(a) {
@@ -82,23 +82,23 @@ https://obsproject.com/forum/threads/browser-image-slideshow.110157/
         return a;
     }
 
-    function randomizeTick(max) {
-        tick = Math.floor(Math.random() * max); // [0, max)
+    function randomizeIndex(max) {
+        index = Math.floor(Math.random() * max); // [0, max)
     }
     
     function nextSlide() {
-        if (tick === images.length-1 && stopOnLastImage === true) {
+        if (index === images.length-1 && stopOnLastImage === true) {
             clearInterval(slideshowFunc); // stop slideshow on last slide
         } else {
-            if (tick === images.length-1) { // if end of loop, start new loop
+            if (index === images.length-1) { // if end of loop, start new loop
                 if (mode === 0) {
                     shuffle(indexes);
                 } else if (mode === 2) {
-                    randomizeTick(images.length);
+                    randomizeIndex(images.length);
                 }
-                tick = 0;
+                index = 0;
             } else { // next slide
-                tick++;
+                index++;
             }
         }
 
@@ -107,7 +107,7 @@ https://obsproject.com/forum/threads/browser-image-slideshow.110157/
     
     function slideshow() {
         if (fadeInTop) {
-            topImage.src = images[indexes[tick]];
+            topImage.src = images[indexes[index]];
             
             $("#botImage").animate(
                 { opacity: 0.0 },
@@ -123,7 +123,7 @@ https://obsproject.com/forum/threads/browser-image-slideshow.110157/
             );
 
         } else {
-            botImage.src = images[indexes[tick]];
+            botImage.src = images[indexes[index]];
             
             $("#botImage").animate(
                 { opacity: 1.0 },
@@ -143,7 +143,7 @@ https://obsproject.com/forum/threads/browser-image-slideshow.110157/
     if (mode === 0) { // random mode
         shuffle(indexes);
     } else if (mode === 2) { // choose random image to start on
-        randomizeTick(images.length);
+        randomizeIndex(images.length);
     }
 
     // if only 1 image in slide show, fade in the image
