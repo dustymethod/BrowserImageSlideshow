@@ -64,15 +64,14 @@ https://obsproject.com/forum/threads/browser-image-slideshow.110157/
     topImage.id = "topImage";
     botImage.id = "botImage";
 
-    // prevent white outline by setting initial transparency
-    topImage.style.opacity = "0.0";
-    botImage.style.opacity = "0.0";
-
     let fadeDuration = slideDuration * 0.25;
     let slideshowFunc;
     let index = 0;
     let fadeInTop = true; // bool for deciding if top image fades in or out
-    
+    let isSlideshowPaused = false;
+    let isSlideshowVisible = true;
+    let isTransitionInProgress = false; // skip animation if already in progress
+
     function shuffle(a) {
         for (let i = a.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -85,6 +84,7 @@ https://obsproject.com/forum/threads/browser-image-slideshow.110157/
         index = Math.floor(Math.random() * max); // [0, max)
     }
 
+    // called each interval of setInterval()
     function update() {
         if (index === images.length-1 && stopOnLastImage === true) {
             clearInterval(slideshowFunc);
@@ -103,44 +103,125 @@ https://obsproject.com/forum/threads/browser-image-slideshow.110157/
         fadeInImage(imageSrc);
     }
 
+    function getPreviousSlide() {
+        index = index === 0 ? images.length - 1 : index - 1;
+        let imageSrc = images[indexes[index]];
+        fadeInImage(imageSrc);
+    }
+
     function fadeInImage(imageSrc) {
         if (fadeInTop) { topImage.src = imageSrc; }
         else { botImage.src = imageSrc; }
         
-        const botTarget = fadeInTop ? 0.0 : 1.0;
-        const topTarget = fadeInTop ? 1.0 : 0.0;
+        if (isTransitionInProgress) {
+            $("#topImage").stop(true, true);
+            $("#botImage").stop(true, true);
+        }
         
+        isTransitionInProgress = true;
         $("#botImage").animate(
-            { opacity: botTarget },
+            { opacity: fadeInTop ? 0.0 : 1.0 },
             { duration: fadeDuration }
         );
 
         $("#topImage").animate(
-            { opacity: topTarget },
-            { duration: fadeDuration }
+            { opacity: fadeInTop ? 1.0 : 0.0 },
+            {
+                duration: fadeDuration,
+                done: function() {
+                    isTransitionInProgress = false;
+                }
+            }
         );
-        
+
         fadeInTop = !fadeInTop;
     }
 
-    if (mode === 0) { // random mode
-        shuffle(indexes);
-    } else if (mode === 2) { // choose random image to start on
-        randomizeIndex(images.length);
+    function pause() {
+        console.log("pause");
+        if (isSlideshowPaused) return;
+        clearInterval(slideshowFunc);
+        isSlideshowPaused = true;
     }
 
-    // if only 1 image in slide show, fade in the image
-    if (images.length > 0) {
-        botImage.src = images[indexes[0]];
-        
-        $("#botImage").animate(
-            { opacity: 1.0 },
-            { duration: fadeDuration }
-        );
-    }
-
-    // start slideshow
-    if (images.length > 1) {
+    function resume() {
+        if (!isSlideshowPaused) return;
+        update(); // trigger a single update to fill setInterval delay
         slideshowFunc = setInterval(update, slideDuration);
+        isSlideshowPaused = false;
     }
+
+    function restart() {
+        $("#topImage").stop(true, true);
+        $("#botImage").stop(true, true);
+        clearInterval(slideshowFunc);
+        start();
+    }
+
+    // called once when the browser source loads or restarts
+    function start() {
+        topImage.style.opacity = "0.0";
+        botImage.style.opacity = "0.0";
+        
+        if (images.length > 0) { // if at least 1 image, show the first image
+            
+            if (mode === 0) { // random mode
+                shuffle(indexes);
+            } else if (mode === 2) { // choose random image to start on
+                randomizeIndex(images.length);
+            }
+        
+            botImage.src = images[indexes[index]];
+            $("#botImage").animate(
+                { opacity: 1.0 },
+                { duration: fadeDuration }
+            );
+        }
+
+        if (startWithAutoplay && images.length > 1) {
+            slideshowFunc = setInterval(update, slideDuration);
+        } else {
+            isSlideshowPaused = true;
+        }
+    }
+
+    start();
+
+    // handle hotkey events from OBS
+    document.addEventListener("keydown", (event) => {
+        let key = "";
+        try { key = event.key; } 
+        catch (error) {
+            console.log(error);
+            return;
+        }
+
+        switch (key) {
+            case "1": pause(); break;
+            case "2": resume(); break;
+            case "3": getNextSlide(); break;
+            case "4": getPreviousSlide(); break;
+            case "5": // toggle visibilty
+                if (isSlideshowVisible) {
+                    imageContainer.style.opacity = 0.0;
+                    isSlideshowVisible = false;
+                }  else {
+                    imageContainer.style.opacity = 1.0;
+                    isSlideshowVisible = true;
+                }
+                break;
+            case "6": // toggle pause
+                if (isSlideshowPaused) {
+                    resume();
+                } else {
+                    pause();
+                }
+                break;
+            case "7": restart(); break;
+            default:
+                console.log("Unhandled hotkey: " + key);
+                break;
+        }
+    });
+
 </script>

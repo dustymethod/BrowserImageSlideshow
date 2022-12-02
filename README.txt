@@ -2,54 +2,70 @@ BrowserImageSlideshow
 https://github.com/dustymethod/BrowserImageSlideshow
 Discussion & support: https://obsproject.com/forum/threads/browser-image-slideshow.110157/
 
-A local browser source that plays images in random or alphabetical order.
-Displays each image exactly once per loop.
-Useful for slideshows that may exceed OBS's slideshow's 250mb ram limit. Works offline.
+A slideshow that can be added to OBS as a browser source.
+    - Plays images in random or alphabetical order, or manually via hotkeys in OBS
+    - Displays each image exactly once per loop
+    - local, works offline
+Useful for slideshows that may exceed 250mb uncompressed limit in OBS's current built-in slideshow
 
-settings.js (open in any text editor. ex right click > Open with > Notepad)
+> Setup
+0. Download the latest release https://github.com/dustymethod/BrowserImageSlideshow/releases
+1. Add browser source in OBS:
+    + Add Source > Browser
+    - Choose local file "BrowserImageSlideshow.html"
+    - Delete Custom CSS
+    - Enable "Shutdown source when not visible" and "Refresh browser when scene becomes active" options
+2. Place your slideshow images in the "images" folder (ex. png, jpg, gif)
+3. Add lua script (optional)
+    - OBS > Tools > Scripts > Add (+) SlideshowSettings.lua
+    - adjust settings, and enter name of slideshow browser source (if using hotkeys)
+4. Update slideshow & list of images
+    This can be done 2 different ways, and must be done whenever images are added/removed/renamed, or slideshow settings are changed
+    
+    A) With Lua script in OBS:
+    - Press the Refresh button in the script's settings, or press the Refresh hotkey
+
+    B) Without Lua:
+    - Run RefreshImagesW.cmd or RefreshImages.sh to update the list of images (they do the same thing)
+    - Refresh the browser source by toggling its visibility from the Sources dock in OBS
+    - settings can be adjusted by opening settings.js in a text editor
+5. *** Repeat step 4 whenever you add/remove/rename images or update the settings! ***
+
+> settings.js
     mode:
         0: Random order (default)
         1: Alphabetical order
         2: Alphabetical order (start on random image)
     slideDuration: duration in milliseconds (default 4000)
     stopOnLastImage: if true, the slideshow will not repeat. (default false)
-    
+    startWithAutoplay: if true, the slideshow will start playing automatically. untick this option if you wish to control slides manually via hotkeys.
+        autoplaying/paused can be toggled with hotkeys, regardless if this option is enabled or not
 
-Setup
-0. Download the zipped files from github or the releases page
-    - save & unzip somewhere in your Documents folder (not in obs plugins folder)
-1. Add a browser source in OBS:
-    - Add Source > Browser
-    - Choose local file "BrowserImageSlideshow.html"
-    - Remove Custom CSS
-    - Enable "Shutdown source when not visible" and "Refresh browser when scene becomes active" options.
-2. Place your slideshow images in the "images" folder (ex. jpg, png, gif)
-3. (Optional) Add the lua script:
-    - in OBS Studio: Tools > Scripts
-    - Add RefreshImagesLua.lua, select the script to view and change settings.
-    - this is purely an alternative to using RefreshImagesW.cmd or RefreshImages.sh in step 4
-4. Refreshing images/settings
-    - This must be done whenever images are added/removed/renamed, or when settings are updated.
-    - Run RefreshImagesW.cmd (windows) or RefreshImages.sh (linux) by double-clicking it.
-    - (optional) Or, if using lua script: select RefreshImagesLua.lua & press Reload Scripts button next to +-
-    - Finally, refresh the source in OBS by toggling its visibility
-5. *** Repeat step 4 whenever you add/remove/rename images or update the settings! ***
+> Additional Lua Settings
+    Browser source name: this tells the lua script which browser source to send hotkey events to. you can ignore this setting if not using hotkeys
 
+> Hotkeys - Requires lua script (see step 3)
+    Pause: pause playback
+    Resume: resume playback (if autoplay setting is off, this will still enable autoplay)
+    Next: show the next slide
+    Previous: show the previous slide
+    Toggle visible: hide/show slideshow without pausing/restarting
+    Toggle pause: same as pause/resume, but on a single hotkey
+    Restart: restart the slideshow without checking for new images or settings
+    Refresh: refresh browser source & restart slideshow. changes to images & settings will be reflected
 
-Notes
-    - Adding RefreshImageLua.lua to OBS Studio is optional. If not using lua, refreshing images & settings can be done
-    by running RefreshImages.sh or RefreshImagesW.cmd
-    - Updating settings via the lua script will overwrite settings.js.
-    - The optional lua script may not work with OBS on Linux; please use RefreshImages.sh instead.
+> Notes & tips
+    - Save slideshow somewhere that doesn't require admin permissions, such as in your Documents, and not in the default plugins folder
     - Filenames with uncommon characters may not display
+    - Images in subfolders within the "images" folder will not be shown
+    - RefreshImages.sh and RefreshImagesW.cmd do the same thing; make a list of files within the images folder. depending on your pc, you may be able to run one, but not the other
+    - This slideshow & its scripts write to settings.js and images/images.js
     - EXIF data is ignored; images taken with a camera may not appear rotated correctly
-    - RefreshImages: these scripts will write the names of all images to a text file, which is used by the browser source.
     - This resource has only been tested on Windows. I have not done extensive testing
-    - RefreshImages.sh and RefreshImagesW.cmd do the same thing. one was added later because of compatibility issues
-    
-This script uses compressed jquery (used for animating slide transitions)
+    - if using multiple slideshows, copy the entire slideshow folder, rathern than individual scripts, and add to OBS.
+
+This script uses compressed jquery
 https://jquery.com/
-    
-Issues
-    - because of the way script(s) write to a file, a harmless command window may pop up briefly when the script is run.
-    Haven't found a way to suppress this yet.
+
+> Issues
+    - because of the way script(s) write to a file, a harmless command window may pop up briefly when the script is run. Haven't found a way to suppress this yet.
