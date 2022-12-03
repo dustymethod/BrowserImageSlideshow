@@ -95,7 +95,7 @@ end
 
 function refresh_source()
     -- update images
-    update_image_list(script_path() .. 'images/')
+    update_image_list()
     
     local source = obs.obs_get_source_by_name(browserSourceName)
     if source == nil then
@@ -124,7 +124,7 @@ function script_load(settings)
     obs.obs_data_set_default_int(settings, "slideDuration", defaultSlideDuration)
     obs.obs_data_set_default_bool(settings, "startWithAutoplay", true)
     obs.obs_data_set_default_string(settings, "browserSourceName", "Browser")
-    update_image_list(script_path() .. 'images/')
+    update_image_list()
     
     local hotkey_tag = " [Slideshow]"
     
@@ -252,9 +252,9 @@ function send_hotkey_to_browser(keycode, key_pressed)
 end
 
 -- write list of images to js file
-function update_image_list(dir)
+function update_image_list()
     local output = assert(io.open(script_path() .. 'images/images.js', "w"))
-    local files = assert(io.popen('dir "'..dir..'" /b'))
+    local files = assert(io.popen('dir "'.. script_path() .. 'images/' ..'" /b'))
     output:write('let imageNamesStr=`\n')
     local imageCount = 0
     
