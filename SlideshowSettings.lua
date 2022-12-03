@@ -97,10 +97,14 @@ function refresh_source()
     -- update images
     update_image_list(script_path() .. 'images/')
     
-    -- refresh browser source. uses exeldro's method - https://github.com/exeldro/obs-lua/blob/master/refresh-browsers.lua
     local source = obs.obs_get_source_by_name(browserSourceName)
+    if source == nil then
+        print("Browser source \"" .. browserSourceName .. "\" not found. Be sure to enter the correct source's name in the lua script.")
+        return
+    end
     local settings = obs.obs_source_get_settings(source)
     
+    -- refresh browser source. uses exeldro's method - https://github.com/exeldro/obs-lua/blob/master/refresh-browsers.lua
     local fps = obs.obs_data_get_int(settings, "fps")
     if fps % 2 == 0 then
         obs.obs_data_set_int(settings, "fps", fps + 1)
@@ -114,7 +118,7 @@ end
 function getUniqueName(name)
     return script_path() .. name
 end
-    
+
 -- called when script is loaded
 function script_load(settings)
     obs.obs_data_set_default_int(settings, "slideDuration", defaultSlideDuration)
