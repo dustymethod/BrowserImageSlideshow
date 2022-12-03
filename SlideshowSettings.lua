@@ -1,4 +1,4 @@
---[=====[ 
+--[=====[
 
 https://github.com/dustymethod/BrowserImageSlideshow
 https://obsproject.com/forum/resources/browser-image-slideshow.852/
@@ -113,6 +113,7 @@ function refresh_source()
     end
     obs.obs_source_update(source, settings)
     obs.obs_source_release(source)
+    obs.obs_data_release(settings)
 end
 
 function getUniqueName(name)
