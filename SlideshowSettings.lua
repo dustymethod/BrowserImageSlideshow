@@ -270,7 +270,7 @@ end
 
 function log_slideshow_info()
     print("Slideshow loaded. \n" ..
-    "source name: \"" .. browserSourceName .. 
+    "source name: \"" .. browserSourceName ..
     "\" | mode: ".. mode_options[mode+1] ..
     " | slide duration: ".. slideDuration ..
     "ms | loop: " .. tostring(not(stopOnLastImage)) ..
