@@ -36,9 +36,13 @@ local KC_RESTART = 55 --7
 local KC_REFRESH = 56 --8
 
 function script_description()
-    return "Browser Image Slideshow\n\n" ..
-    "https://obsproject.com/forum/resources/browser-image-slideshow.852/\n\n" ..
-    "Press the refresh button after changing settings, or adding/removing images. This will update the slideshow and refresh the browser source."
+    return [[
+    <center><h3>Browser Image Slideshow</h3></center>
+    <br><a href="https://github.com/dustymethod/BrowserImageSlideshow">Github</a>
+    <br><a href="https://obsproject.com/forum/resources/browser-image-slideshow.852/">OBS Forum</a>
+    <br>
+    <br>Press the refresh button after changing settings, or adding/removing images. This will update the slideshow and refresh the browser source.
+    ]]
 end
 
 function script_properties()
@@ -50,7 +54,7 @@ function script_properties()
     end
     
     obs.obs_properties_add_int(props, "slideDuration", "Slide duration (ms):", minSlideDuration, maxSlideDuration, 500)
-    obs.obs_properties_add_bool(props, "startWithAutoplay", "Autoplay: automatically play slides\n (turn off for manual control)")
+    obs.obs_properties_add_bool(props, "startWithAutoplay", "Autoplay")
     obs.obs_properties_add_bool(props, "stopOnLastImage", "Stop slideshow on last image")
     obs.obs_properties_add_text(props, "browserSourceName", "Browser source name:\n(for use with hotkeys)", obs.OBS_TEXT_DEFAULT)
     obs.obs_properties_add_button(props, "refreshButton", "Refresh", refresh_source)
