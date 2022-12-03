@@ -256,7 +256,7 @@ function update_image_list(dir)
     local output = assert(io.open(script_path() .. 'images/images.js', "w"))
     local files = assert(io.popen('dir "'..dir..'" /b'))
     output:write('let imageNamesStr=`\n')
-    imageCount = 0
+    local imageCount = 0
     
     for line in files:lines() do
         output:write(line .. "\n")
