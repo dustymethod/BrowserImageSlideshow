@@ -88,6 +88,7 @@ function randomizeIndex(max) {
 function update() {
     if (index === images.length-1 && stopOnLastImage === true) {
         clearInterval(slideshowFunc);
+        isSlideshowPaused = true;
         return;
     }
     getNextSlide();
@@ -146,7 +147,7 @@ function pause() {
 
 function resume() {
     if (!isSlideshowPaused) return;
-    update(); // trigger a single update to fill setInterval delay
+    getNextSlide(); // get next slide without waiting for setInterval delay
     slideshowFunc = setInterval(update, slideDuration);
     isSlideshowPaused = false;
 }
