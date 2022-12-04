@@ -37,7 +37,7 @@ Useful for slideshows that may exceed 250mb uncompressed limit in OBS's current 
         1: Alphabetical order
         2: Alphabetical order (start on random image)
     slideDuration: duration in milliseconds (default 4000)
-    stopOnLastImage: if true, the slideshow will not repeat. (default false)
+    loopSlideshow: if true, the slideshow will repeat. in Random order mode, images will be reshuffled. (default true)
     startWithAutoplay: if true, the slideshow will start playing automatically. untick this option if you wish to control slides manually via hotkeys.
         autoplaying/paused can be toggled with hotkeys, regardless if this option is enabled or not
 
