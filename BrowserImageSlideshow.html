@@ -86,7 +86,7 @@ function randomizeIndex(max) {
 
 // called each interval of setInterval()
 function update() {
-    if (index === images.length-1 && stopOnLastImage === true) {
+    if (index === images.length-1 && loopSlideshow === false) {
         clearInterval(slideshowFunc);
         isSlideshowPaused = true;
         return;

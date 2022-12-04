@@ -12,6 +12,7 @@ slideDuration = 3800
 defaultSlideDuration = 4000
 minSlideDuration = 1000
 maxSlideDuration = 100000
+loopSlideshow = true
 startWithAutoplay = true
 browserSourceName = "Browser"
 local mode_options = {"Random Order", "Alphabetical Order", "Alphabetical order, start on random"}
@@ -55,7 +56,7 @@ function script_properties()
     
     obs.obs_properties_add_int(props, "slideDuration", "Slide duration (ms):", minSlideDuration, maxSlideDuration, 500)
     obs.obs_properties_add_bool(props, "startWithAutoplay", "Autoplay")
-    obs.obs_properties_add_bool(props, "stopOnLastImage", "Stop slideshow on last image")
+    obs.obs_properties_add_bool(props, "loopSlideshow", "Loop slideshow")
     obs.obs_properties_add_text(props, "browserSourceName", "Browser source name:\n(for use with hotkeys)", obs.OBS_TEXT_DEFAULT)
     obs.obs_properties_add_button(props, "refreshButton", "Refresh", refresh_source)
     return props
@@ -128,6 +129,7 @@ end
 function script_load(settings)
     obs.obs_data_set_default_int(settings, "slideDuration", defaultSlideDuration)
     obs.obs_data_set_default_bool(settings, "startWithAutoplay", true)
+    obs.obs_data_set_default_bool(settings, "loopSlideshow", true)
     obs.obs_data_set_default_string(settings, "browserSourceName", "Browser")
     update_image_list()
     
@@ -178,17 +180,17 @@ end
 function script_update(settings)
     mode = obs.obs_data_get_int(settings, "mode")
     slideDuration = obs.obs_data_get_int(settings, "slideDuration")
-    stopOnLastImage = obs.obs_data_get_bool(settings, "stopOnLastImage")
+    loopSlideshow = obs.obs_data_get_bool(settings, "loopSlideshow")
     startWithAutoplay = obs.obs_data_get_bool(settings, "startWithAutoplay")
     browserSourceName = obs.obs_data_get_string(settings, "browserSourceName")
     
     local output = assert(io.open(script_path() .. 'settings.js', "w"))
     output:write('let mode = '.. mode .. ';\n')
     output:write('let slideDuration = '.. slideDuration .. ';\n')
-    if stopOnLastImage == true then
-        output:write('let stopOnLastImage = true;\n')
+    if loopSlideshow == true then
+        output:write('let loopSlideshow = true;\n')
     else
-        output:write('let stopOnLastImage = false;\n')
+        output:write('let loopSlideshow = false;\n')
     end
 
     if startWithAutoplay == true then
@@ -278,6 +280,6 @@ function log_slideshow_info()
     "source name: \"" .. browserSourceName ..
     "\" | mode: ".. mode_options[mode+1] ..
     " | slide duration: ".. slideDuration ..
-    "ms | loop: " .. tostring(not(stopOnLastImage)) ..
+    "ms | loop: " .. tostring(loopSlideshow) ..
     " | autoplay: " .. tostring(startWithAutoplay))
 end
