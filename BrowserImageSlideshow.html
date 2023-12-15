@@ -24,6 +24,19 @@ https://obsproject.com/forum/threads/browser-image-slideshow.110157/
         margin: auto;
         overflow: hidden;
     }
+    #caption {
+        height: 30%;
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        color: white;
+        font-size: 7em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        text-shadow: -2px 2px black, -2px -2px black, 2px -2px black, 2px 2px black, 5px 5px 2px black;
+    }
 </style>
 
 <script src="jquery-3.4.1.min.js"></script>
@@ -64,6 +77,11 @@ let botImage = document.createElement("img");
 let imageContainer = document.getElementById("imageContainer");
 imageContainer.appendChild(botImage);
 imageContainer.appendChild(topImage);
+if(captionEnabled) {
+    const caption = document.createElement("div");
+    caption.id = "caption";
+    imageContainer.appendChild(caption);
+}
 topImage.id = "topImage";
 botImage.id = "botImage";
 
@@ -137,6 +155,9 @@ function fadeInImage(imageSrc) {
             }
         }
     );
+    if(captionEnabled) {
+        setImageCaption(imageSrc);
+    }
 
     fadeInTop = !fadeInTop;
 }
@@ -161,6 +182,12 @@ function restart() {
     start();
 }
 
+function setImageCaption(imageSrc) {
+    let filename = imageSrc.replace(/^.*[\\/]/, '');
+    filename = filename.substr(0, filename.lastIndexOf('.')) || filename;
+    caption.innerText = filename;
+}
+
 // called once when the browser source loads or restarts
 function start() {
     topImage.style.opacity = "0.0";
@@ -175,6 +202,9 @@ function start() {
         }
     
         botImage.src = images[indexes[index]];
+        if(captionEnabled) {
+            setImageCaption(images[indexes[index]]);
+        }
         $("#botImage").animate(
             { opacity: 1.0 },
             { duration: fadeDuration }

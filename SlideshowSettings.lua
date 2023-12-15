@@ -16,6 +16,7 @@ loopSlideshow = true
 startWithAutoplay = true
 browserSourceName = "Browser"
 local mode_options = {"Random Order", "Alphabetical Order", "Alphabetical order, start on random"}
+captionEnabled = false 
 
 HK_PAUSE = obs.OBS_INVALID_HOTKEY_ID
 HK_RESUME = obs.OBS_INVALID_HOTKEY_ID
@@ -57,6 +58,7 @@ function script_properties()
     obs.obs_properties_add_int(props, "slideDuration", "Slide duration (ms):", minSlideDuration, maxSlideDuration, 500)
     obs.obs_properties_add_bool(props, "startWithAutoplay", "Autoplay")
     obs.obs_properties_add_bool(props, "loopSlideshow", "Loop slideshow")
+    obs.obs_properties_add_bool(props, "captionEnabled", "Add Captaions based on filename")
     obs.obs_properties_add_text(props, "browserSourceName", "Browser source name:\n(for use with hotkeys)", obs.OBS_TEXT_DEFAULT)
     obs.obs_properties_add_button(props, "refreshButton", "Refresh", refresh_source)
     return props
@@ -130,6 +132,7 @@ function script_load(settings)
     obs.obs_data_set_default_int(settings, "slideDuration", defaultSlideDuration)
     obs.obs_data_set_default_bool(settings, "startWithAutoplay", true)
     obs.obs_data_set_default_bool(settings, "loopSlideshow", true)
+    obs.obs_data_set_default_bool(settings, "captionEnabled", false)
     obs.obs_data_set_default_string(settings, "browserSourceName", "Browser")
     update_image_list()
     
@@ -181,6 +184,7 @@ function script_update(settings)
     mode = obs.obs_data_get_int(settings, "mode")
     slideDuration = obs.obs_data_get_int(settings, "slideDuration")
     loopSlideshow = obs.obs_data_get_bool(settings, "loopSlideshow")
+    captionEnabled = obs.obs_data_get_bool(settings, "captionEnabled")
     startWithAutoplay = obs.obs_data_get_bool(settings, "startWithAutoplay")
     browserSourceName = obs.obs_data_get_string(settings, "browserSourceName")
     
@@ -197,6 +201,12 @@ function script_update(settings)
         output:write('let startWithAutoplay = true;\n')
     else
         output:write('let startWithAutoplay = false;\n')
+    end
+
+    if captionEnabled == true then
+        output:write('let captionEnabled = true;\n')
+    else
+        output:write('let captionEnabled = false;\n')
     end
     
     output:close()
@@ -281,5 +291,6 @@ function log_slideshow_info()
     "\" | mode: ".. mode_options[mode+1] ..
     " | slide duration: ".. slideDuration ..
     "ms | loop: " .. tostring(loopSlideshow) ..
-    " | autoplay: " .. tostring(startWithAutoplay))
+    " | autoplay: " .. tostring(startWithAutoplay) ..
+    " | captionEnabled: " .. tostring(captionEnabled))
 end
