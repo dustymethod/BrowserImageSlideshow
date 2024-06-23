@@ -43,7 +43,8 @@ function script_description()
     <br><a href="https://github.com/dustymethod/BrowserImageSlideshow">Github</a>
     <br><a href="https://obsproject.com/forum/resources/browser-image-slideshow.852/">OBS Forum</a>
     <br>
-    <br>Press the refresh button after changing settings, or adding/removing images. This will update the slideshow and refresh the browser source.
+    <br>Press the <b>Refresh</b> button below after changing any settings or adding images. This will update the slideshow and refresh the browser source.
+    <br>(Or use the Refresh Source [Slideshow] hotkey)
     ]]
 end
 
