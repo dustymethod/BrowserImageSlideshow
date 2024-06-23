@@ -15,7 +15,7 @@ maxSlideDuration = 100000
 loopSlideshow = true
 startWithAutoplay = true
 browserSourceName = "Browser"
-local mode_options = {"Random Order", "Alphabetical Order", "Alphabetical Order, start on random"}
+local mode_options = {"Random Order", "Alphabetical Order", "Alphabetical Order, start on random", "Alphanumeric"}
 captionEnabled = false 
 
 HK_PAUSE = obs.OBS_INVALID_HOTKEY_ID

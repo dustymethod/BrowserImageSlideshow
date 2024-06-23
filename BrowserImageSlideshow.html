@@ -45,10 +45,11 @@ https://obsproject.com/forum/threads/browser-image-slideshow.110157/
 <script src="settings.js"></script>
 <script>
 
-// modes (defined in settings.js):
+// modes
 // 0: Random order (default)
 // 1: Alphabetical order
 // 2: Alphabetical order (start on random image)
+// 3: Alphanumeric
 
 // common extensions from here https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
 const imageExtensions = ["apng", "avif", "gif", "jpg", "jpeg", "jfif", "pjpeg", "pjp", "png", "svg", "webp", "bmp", "ico", "cur"];
@@ -105,6 +106,17 @@ function shuffle(a) {
         [a[i], a[j]] = [a[j], a[i]];
     }
     return a;
+}
+
+// Sort list of images alpha numerically
+function alphanumericSort() {
+    // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator/Collator#numeric
+    const collator = new Intl.Collator(undefined, {
+        numeric: true
+    });
+    images.sort((a, b) => {
+        return collator.compare(a, b);
+    });
 }
 
 function randomizeIndex(max) {
@@ -213,13 +225,16 @@ function start() {
             shuffle(indexes);
         } else if (mode === 2) { // choose random image to start on
             randomizeIndex(images.length);
+        } else if (mode === 3) {
+            alphanumericSort();
         }
     
-        botImage.src = images[indexes[index]];
         if(captionEnabled) {
             generateCaptions();
             setCaption(captions[indexes[index]]);
         }
+        
+        botImage.src = images[indexes[index]];
         $("#botImage").animate(
             { opacity: 1.0 },
             { duration: fadeDuration }

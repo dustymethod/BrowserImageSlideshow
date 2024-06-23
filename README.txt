@@ -42,6 +42,7 @@ Useful for slideshows that may exceed the 250mb uncompressed limit in older vers
         0: Random order (default)
         1: Alphabetical order
         2: Alphabetical order (start on random image)
+        3: Alphanumeric order
     slideDuration: duration in milliseconds (default 4000)
     loopSlideshow: if true, the slideshow will repeat. in Random order mode, images will be reshuffled. (default true)
     startWithAutoplay: if true, the slideshow will start playing automatically. untick this option if you wish to control slides manually via hotkeys.
