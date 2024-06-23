@@ -46,7 +46,12 @@ Useful for slideshows that may exceed the 250mb uncompressed limit in older vers
     loopSlideshow: if true, the slideshow will repeat. in Random order mode, images will be reshuffled. (default true)
     startWithAutoplay: if true, the slideshow will start playing automatically. untick this option if you wish to control slides manually via hotkeys.
         autoplay/pause can be toggled with hotkeys, regardless if this option is enabled or not
+    captionEnabled: if true, the image name will be displayed with the image. default false. (see Captions notes below)
 
+> Captions
+    - when enabled, each image's filename (without extension) will be shown. ex: "Artist Name.png" -> "Artist Name"
+    - "--" is used as the default delimiter. ex: "Artist Name--001.png" -> "Artist Name"
+    - delimiter can be changed by manually editing captionDelimiter in BrowserImageSlideshow.html
 
 > Hotkeys - Requires lua script (see step 3)
     Pause: pause playback
