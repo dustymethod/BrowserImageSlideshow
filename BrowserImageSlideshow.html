@@ -66,7 +66,8 @@ for (let i = images.length-1; i >= 0; i--) {
 }
 
 // setup indexes for shuffling
-let indexes = new Array();
+const indexes = new Array(); // numbers indexing the list of images, used for shuffling
+let index = 0; //current position in "indexes" array
 for(let i = 0; i < images.length; i++) {
     images[i] = "images/" + images[i];
     indexes.push(i);
@@ -78,17 +79,21 @@ let botImage = document.createElement("img");
 let imageContainer = document.getElementById("imageContainer");
 imageContainer.appendChild(botImage);
 imageContainer.appendChild(topImage);
-if(captionEnabled) {
-    const caption = document.createElement("div");
-    caption.id = "caption";
-    imageContainer.appendChild(caption);
-}
 topImage.id = "topImage";
 botImage.id = "botImage";
 
+// setup captions
+const captionDelimiter = "--";
+const captions = new Array();
+let caption;
+if(captionEnabled) {
+    caption = document.createElement("div");
+    caption.id = "caption";
+    imageContainer.appendChild(caption);
+}
+
 let fadeDuration = slideDuration * 0.25;
 let slideshowFunc;
-let index = 0;
 let fadeInTop = true; // bool for deciding if top image fades in or out
 let isSlideshowPaused = false;
 let isSlideshowVisible = true;
@@ -114,6 +119,20 @@ function update() {
         return;
     }
     getNextSlide();
+}
+
+function generateCaptions() {
+    captions.length = 0;
+    images.forEach((fileName) => {
+        let text = fileName.replace(/^.*[\\/]/, '');
+        text = text.substr(0, text.lastIndexOf('.')) || text;
+        text = text.substr(0, text.lastIndexOf(captionDelimiter)) || text;
+        captions.push(text);
+    });
+}
+
+function setCaption(text) {
+    caption.innerText = text;
 }
 
 function getNextSlide() {
@@ -157,7 +176,7 @@ function fadeInImage(imageSrc) {
         }
     );
     if(captionEnabled) {
-        setImageCaption(imageSrc);
+        setCaption(captions[indexes[index]]);
     }
 
     fadeInTop = !fadeInTop;
@@ -183,12 +202,6 @@ function restart() {
     start();
 }
 
-function setImageCaption(imageSrc) {
-    let filename = imageSrc.replace(/^.*[\\/]/, '');
-    filename = filename.substr(0, filename.lastIndexOf('.')) || filename;
-    caption.innerText = filename;
-}
-
 // called once when the browser source loads or is restarted via hotkey
 function start() {
     topImage.style.opacity = "0.0";
@@ -204,7 +217,8 @@ function start() {
     
         botImage.src = images[indexes[index]];
         if(captionEnabled) {
-            setImageCaption(images[indexes[index]]);
+            generateCaptions();
+            setCaption(captions[indexes[index]]);
         }
         $("#botImage").animate(
             { opacity: 1.0 },
