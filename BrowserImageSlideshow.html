@@ -53,7 +53,7 @@ https://obsproject.com/forum/threads/browser-image-slideshow.110157/
 const imageExtensions = ["apng", "avif", "gif", "jpg", "jpeg", "jfif", "pjpeg", "pjp", "png", "svg", "webp", "bmp", "ico", "cur"];
 
 // setup image src strings
-let images = imageNamesStr.split("\n");
+const images = imageNamesStr.split("\n");
 images.shift();
 images.pop();
 for (let i = images.length-1; i >= 0; i--) {
@@ -188,7 +188,7 @@ function setImageCaption(imageSrc) {
     caption.innerText = filename;
 }
 
-// called once when the browser source loads or restarts
+// called once when the browser source loads or is restarted via hotkey
 function start() {
     topImage.style.opacity = "0.0";
     botImage.style.opacity = "0.0";
@@ -252,7 +252,7 @@ document.addEventListener("keydown", (event) => {
             break;
         case "7": restart(); break;
         default:
-            console.log("Unhandled hotkey: " + key);
+            //console.log("Unhandled hotkey: " + key);
             break;
     }
 });
