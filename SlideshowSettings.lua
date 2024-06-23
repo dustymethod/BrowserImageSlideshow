@@ -59,7 +59,7 @@ function script_properties()
     obs.obs_properties_add_int(props, "slideDuration", "Slide duration (ms):", minSlideDuration, maxSlideDuration, 500)
     obs.obs_properties_add_bool(props, "startWithAutoplay", "Autoplay")
     obs.obs_properties_add_bool(props, "loopSlideshow", "Loop slideshow")
-    obs.obs_properties_add_bool(props, "captionEnabled", "Add Captaions based on filename")
+    obs.obs_properties_add_bool(props, "captionEnabled", "Show filename caption")
     obs.obs_properties_add_text(props, "browserSourceName", "Browser source name:\n(for use with hotkeys)", obs.OBS_TEXT_DEFAULT)
     obs.obs_properties_add_button(props, "refreshButton", "Refresh", refresh_source)
     return props
