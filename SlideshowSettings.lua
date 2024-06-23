@@ -15,7 +15,7 @@ maxSlideDuration = 100000
 loopSlideshow = true
 startWithAutoplay = true
 browserSourceName = "Browser"
-local mode_options = {"Random Order", "Alphabetical Order", "Alphabetical order, start on random"}
+local mode_options = {"Random Order", "Alphabetical Order", "Alphabetical Order, start on random"}
 captionEnabled = false 
 
 HK_PAUSE = obs.OBS_INVALID_HOTKEY_ID
@@ -180,7 +180,7 @@ function script_load(settings)
     obs.obs_data_array_release(hotkey_save_array)
 end
 
--- called when script settings change
+-- called when script settings change. writes changes to settings.js
 function script_update(settings)
     mode = obs.obs_data_get_int(settings, "mode")
     slideDuration = obs.obs_data_get_int(settings, "slideDuration")
@@ -269,7 +269,7 @@ function send_hotkey_to_browser(keycode, key_pressed)
     obs.obs_source_release(source)
 end
 
--- write list of images to js file
+-- write list of images to images.js
 function update_image_list()
     local output = assert(io.open(script_path() .. 'images/images.js', "w"))
     local files = assert(io.popen('dir "'.. script_path() .. 'images/' ..'" /b'))
