@@ -252,6 +252,8 @@ start();
 
 // handle hotkey events from OBS
 document.addEventListener("keydown", (event) => {
+    if (images.length == 0) return;
+    
     let key = "";
     try { key = event.key; } 
     catch (error) {
