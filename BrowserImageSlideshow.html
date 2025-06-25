@@ -60,7 +60,7 @@ const images = imageNamesStr.split("\n");
 images.shift();
 images.pop();
 for (let i = images.length-1; i >= 0; i--) {
-    let fileName = images[i];
+    let fileName = images[i].toLowerCase();
     // remove anything that's not an image
     if (!imageExtensions.some(v => fileName.includes("."+v))) {
         images.splice(i, 1);
