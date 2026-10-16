@@ -48,6 +48,16 @@ Useful for slideshows that may exceed the 250mb uncompressed limit in older vers
     startWithAutoplay: if true, the slideshow will start playing automatically. untick this option if you wish to control slides manually via hotkeys.
         autoplay/pause can be toggled with hotkeys, regardless if this option is enabled or not
     captionEnabled: if true, the image name will be displayed with the image. default false. (see Captions notes below)
+    rememberPlayback: if true, remember the current image and playback order across browser-source reloads. default true.
+        - Enabled by default, including with older settings files. Set false to keep the previous reload behavior.
+        - Can also be disabled with "Remember playback position and order" in the Lua script settings.
+        - Saves on slide changes, including manual Next/Previous, and restores the current image and remaining order on reload.
+        - The restored image receives a full slide duration; pause state is controlled by startWithAutoplay, as before.
+        - Applies to all four ordering modes. A changed mode or image list starts a fresh playback order.
+        - Restart starts a fresh order and replaces the saved state when this option is enabled.
+        - Stored in the browser's local storage per full page URL. Sources using the same URL and browser profile share history.
+        - Clearing browser storage also clears playback history. If storage is unavailable, normal playback continues.
+
 
 > Captions
     - when enabled, each image's filename (without extension) will be shown. ex: "Artist Name.png" -> "Artist Name"
@@ -81,3 +91,7 @@ https://jquery.com/
 
 > Issues
     - because of the way script(s) write to a file, a harmless command window may pop up briefly when the script is run. Haven't found a way to suppress this yet.
+
+> DEVELOPMENT TESTS
+    Run: node --test tests/playback-history.test.cjs (Node.js 18 or newer)
+    Node.js is only required for these tests, not for using the slideshow.

@@ -101,6 +101,51 @@ let isSlideshowPaused = false;
 let isSlideshowVisible = true;
 let isTransitionInProgress = false; // skip animation if already in progress
 
+// Remember playback by default, including when using an older settings file.
+const playbackHistoryEnabled = typeof rememberPlayback === "undefined" || rememberPlayback;
+
+function playbackHistoryKey() {
+    return "BrowserImageSlideshow.playback.v1:" + window.location.href;
+}
+
+function savePlaybackHistory() {
+    if (!playbackHistoryEnabled || images.length === 0) return;
+    try {
+        window.localStorage.setItem(playbackHistoryKey(), JSON.stringify({
+            version: 1,
+            mode: mode,
+            images: images,
+            indexes: indexes,
+            index: index
+        }));
+    } catch (error) {
+        // A disabled/full browser store must not interrupt the slideshow.
+        console.warn("Could not save slideshow playback history:", error);
+    }
+}
+
+function restorePlaybackHistory() {
+    if (!playbackHistoryEnabled) return false;
+    try {
+        const saved = JSON.parse(window.localStorage.getItem(playbackHistoryKey()));
+        if (!saved || saved.version !== 1 || saved.mode !== mode ||
+            !Array.isArray(saved.images) || saved.images.length !== images.length ||
+            !saved.images.every((image, i) => image === images[i]) ||
+            !Array.isArray(saved.indexes) || saved.indexes.length !== images.length ||
+            !Number.isInteger(saved.index) || saved.index < 0 || saved.index >= images.length ||
+            !saved.indexes.every(i => Number.isInteger(i) && i >= 0 && i < images.length) ||
+            new Set(saved.indexes).size !== images.length) {
+            return false;
+        }
+        saved.indexes.forEach((value, i) => { indexes[i] = value; });
+        index = saved.index;
+        return true;
+    } catch (error) {
+        console.warn("Could not restore slideshow playback history:", error);
+        return false;
+    }
+}
+
 function shuffle(a) {
     for (let i = a.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -193,6 +238,7 @@ function fadeInImage(imageSrc) {
     }
 
     fadeInTop = !fadeInTop;
+    savePlaybackHistory();
 }
 
 function pause() {
@@ -212,22 +258,26 @@ function restart() {
     $("#topImage").stop(true, true);
     $("#botImage").stop(true, true);
     clearInterval(slideshowFunc);
+    if (playbackHistoryEnabled) index = 0;
     start();
 }
 
 // called once when the browser source loads or is restarted via hotkey
-function start() {
+function start(restoreHistory = false) {
     topImage.style.opacity = "0.0";
     botImage.style.opacity = "0.0";
     
     if (images.length > 0) { // if at least 1 image, show the first image
         
-        if (mode === 0) { // random mode
-            shuffle(indexes);
-        } else if (mode === 2) { // choose random image to start on
-            randomizeIndex(images.length);
-        } else if (mode === 3) {
+        if (mode === 3) {
             alphanumericSort();
+        }
+        if (!restoreHistory || !restorePlaybackHistory()) {
+            if (mode === 0) { // random mode
+                shuffle(indexes);
+            } else if (mode === 2) { // choose random image to start on
+                randomizeIndex(images.length);
+            }
         }
     
         if(captionEnabled) {
@@ -240,6 +290,7 @@ function start() {
             { opacity: 1.0 },
             { duration: fadeDuration }
         );
+        savePlaybackHistory();
     }
 
     if (startWithAutoplay && images.length > 1) {
@@ -249,7 +300,7 @@ function start() {
     }
 }
 
-start();
+start(true);
 
 // handle hotkey events from OBS
 document.addEventListener("keydown", (event) => {

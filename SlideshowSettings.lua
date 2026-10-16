@@ -17,6 +17,7 @@ startWithAutoplay = true
 browserSourceName = "Browser"
 local mode_options = {"Random Order", "Alphabetical Order", "Alphabetical Order, start on random", "Alphanumeric"}
 captionEnabled = false 
+rememberPlayback = true
 
 HK_PAUSE = obs.OBS_INVALID_HOTKEY_ID
 HK_RESUME = obs.OBS_INVALID_HOTKEY_ID
@@ -60,6 +61,7 @@ function script_properties()
     obs.obs_properties_add_bool(props, "startWithAutoplay", "Autoplay")
     obs.obs_properties_add_bool(props, "loopSlideshow", "Loop slideshow")
     obs.obs_properties_add_bool(props, "captionEnabled", "Show filename caption")
+    obs.obs_properties_add_bool(props, "rememberPlayback", "Remember playback position and order")
     obs.obs_properties_add_text(props, "browserSourceName", "Browser source name:\n(for use with hotkeys)", obs.OBS_TEXT_DEFAULT)
     obs.obs_properties_add_button(props, "refreshButton", "Refresh", refresh_source)
     return props
@@ -134,6 +136,7 @@ function script_load(settings)
     obs.obs_data_set_default_bool(settings, "startWithAutoplay", true)
     obs.obs_data_set_default_bool(settings, "loopSlideshow", true)
     obs.obs_data_set_default_bool(settings, "captionEnabled", false)
+    obs.obs_data_set_default_bool(settings, "rememberPlayback", true)
     obs.obs_data_set_default_string(settings, "browserSourceName", "Browser")
     update_image_list()
     
@@ -186,6 +189,7 @@ function script_update(settings)
     slideDuration = obs.obs_data_get_int(settings, "slideDuration")
     loopSlideshow = obs.obs_data_get_bool(settings, "loopSlideshow")
     captionEnabled = obs.obs_data_get_bool(settings, "captionEnabled")
+    rememberPlayback = obs.obs_data_get_bool(settings, "rememberPlayback")
     startWithAutoplay = obs.obs_data_get_bool(settings, "startWithAutoplay")
     browserSourceName = obs.obs_data_get_string(settings, "browserSourceName")
     
@@ -210,6 +214,8 @@ function script_update(settings)
         output:write('let captionEnabled = false;\n')
     end
     
+    output:write('let rememberPlayback = '.. tostring(rememberPlayback) .. ';\n')
+
     output:close()
     -- log_slideshow_info()
 end
